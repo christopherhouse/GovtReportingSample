@@ -51,7 +51,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish artifact
       inputs:
-       targetPath: $(Build.ArtifactStagingDirectory)/GovtReportingSample.zip
+       targetPath: $(Build.ArtifactStagingDirectory)/GovtReportingDemo.zip
        artifact: build
        publishLocation: pipeline
 
