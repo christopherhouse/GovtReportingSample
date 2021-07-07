@@ -48,6 +48,13 @@ stages:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
 
+    - task: PublishPipelineArtifact@1
+      displayName: Publish artifact
+      inputs:
+       targetPath: $(Build.ArtifactStagingDirectory)/GovtReportingSample.zip
+       artifact: build
+       publishLocation: pipeline
+
 # GovtReportingDemo.zip
 #steps:
 #- task: NuGetToolInstaller@1
