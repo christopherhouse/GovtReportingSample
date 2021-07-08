@@ -84,5 +84,6 @@ module keyVault 'modules/keyVault.bicep' = {
   params: {
     keyVaultName: keyVaultName
     tenantId: subscription().tenantId
+    location: location
   }
 }
