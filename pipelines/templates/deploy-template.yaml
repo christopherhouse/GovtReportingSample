@@ -1,5 +1,5 @@
 parameters:
-- stageName
+- name: stageName
   default: ''
 
 - name: environmentName
