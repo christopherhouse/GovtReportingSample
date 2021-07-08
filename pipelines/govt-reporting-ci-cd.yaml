@@ -59,6 +59,8 @@ stages:
          az bicep build -f $(Build.SourcesDirectory)\infrastructure\main.bicep
          mkdir $(Build.ArtifactStagingDirectory)\infrastructure\
          copy $(Build.SourcesDirectory)\infrastructure\main.* $(Build.ArtifactStagingDirectory)\infrastructure\
+         dir $(Build.SourcesDirectory)
+         dir $(Build.SourcesDirectory)\infrastructure\
 
     - task: PublishPipelineArtifact@1
       displayName: Publish web app artifact
