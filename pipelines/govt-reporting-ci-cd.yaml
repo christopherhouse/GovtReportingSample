@@ -75,3 +75,10 @@ stages:
        targetPath: $(Build.ArtifactStagingDirectory)\infrastructure\
        artifact: infrastructure
        publishLocation: pipeline
+
+- template: templates/deploy-template.yaml
+  parameters:
+    stageName: DeployDevelopment
+    environment: govt-rpt-dev
+    variableGroupName: GOVT-REPORTING-DEV
+    serviceConnection: AIRS

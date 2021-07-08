@@ -1,0 +1,46 @@
+parameters:
+- stageName
+  default: ''
+
+- name: environmentName
+  default: ''
+
+- name: variableGroupName
+  default: ''
+
+- name: serviceConnection
+  default: ''
+
+stages:
+  - stage: ${{ parameters.stageName }}
+    displayName: ${{ parameters.stageName }}
+
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy
+      environment: ${{ parameters.environmentName }}
+      variables:
+      - group: ${{ parameters.variableGroupName }}
+      pool:
+        vmImage: windows-latest
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: webApp
+              displayName: Downlaod web app artifact
+            
+            - download: current
+              artifact: infrastructure
+              displayName: Download infrastructure artifact
+            
+            - task: AzureCLI@2
+              displayName: Deploy infrastructure
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnection }}
+                scriptType: ps
+                scriptLocation: inlineScript
+                inlineScript: |
+                  $deploymentName = "TODO"
+                  az deployment group create -g $(resourceGroupName) -n $deploymentName --templateFile $(Pipeline.Workspace)/infrastructure/main.json --parameters reportRequestQueueName=$(reportRequestQueueName) resourceGroupName=$(resourceGroupName) webJobsStorageAccountName=$(webJobsStorageAccountName)
