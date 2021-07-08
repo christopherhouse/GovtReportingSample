@@ -35,7 +35,7 @@ param accessPolicyTargetObjectId string
 
 var location = resourceGroup().location
 var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
-var reportingStorageDeploymentName = '${reportingStorageAccountName}}-${deploymentNameSuffix}'
+var reportingStorageDeploymentName = '${reportingStorageAccountName}-${deploymentNameSuffix}'
 var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffix}'
 var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentNameSuffix}'
