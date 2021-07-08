@@ -35,4 +35,7 @@ module reportQueue 'modules/storageQueue.bicep' = {
     queueName: reportRequestQueueName
     storageAccountName: reportingStorageAccountName
   }
+  dependsOn: [
+    reportingStorage
+  ]
 }
