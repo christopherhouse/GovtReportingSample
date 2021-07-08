@@ -30,6 +30,9 @@ param appServiceSkuCapacity int
 @description('The name of the Key Vault to provision')
 param keyVaultName string
 
+@description('Object ID Key Vault access policy will be assigned to')
+param accessPolicyTargetObjectId string
+
 var location = resourceGroup().location
 var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
 var reportingStorageDeploymentName = '${reportingStorageAccountName}}-${deploymentNameSuffix}'
@@ -85,5 +88,6 @@ module keyVault 'modules/keyVault.bicep' = {
     keyVaultName: keyVaultName
     tenantId: subscription().tenantId
     location: location
+    accessPolicyTargetObjectId: accessPolicyTargetObjectId
   }
 }
