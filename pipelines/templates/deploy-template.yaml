@@ -43,4 +43,4 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   $deploymentName = "TODO"
-                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/main.json --parameters reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName)
+                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/main.json --parameters reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName)
