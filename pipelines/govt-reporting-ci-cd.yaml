@@ -79,6 +79,6 @@ stages:
 - template: templates/deploy-template.yaml
   parameters:
     stageName: DeployDevelopment
-    environment: govt-rpt-dev
+    environmentName: govt-rpt-dev
     variableGroupName: GOVT-REPORTING-DEV
     serviceConnection: AIRS
