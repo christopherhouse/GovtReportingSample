@@ -19,11 +19,11 @@ module webjobStorage 'modules/storageAccount.bicep' = {
 }
 
 module reportingStorage 'modules/storageAccount.bicep' = {
-  name: reportingStorageAccountName
+  name: 'reportingStorage'
   params: {
     location: location
     skuName: storageAccountSkuName
-    skuTier: storageAccessTier
+    skuTier: storageSkuTier
     storageAccessTier: storageAccessTier
     storageAccountName: reportingStorageAccountName
   }
