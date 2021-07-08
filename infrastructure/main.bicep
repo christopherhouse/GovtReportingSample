@@ -27,10 +27,17 @@ param appServiceSkuName string
 @description('The capacity for the Web App SKU')
 param appServiceSkuCapacity int
 
-var location = resourceGroup().location
+@description('The name of the Key Vault to provision')
+param keyVaultName string
 
+var location = resourceGroup().location
+var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
+var reportingStorageDeploymentName = '${reportingStorageAccountName}}-${deploymentNameSuffix}'
+var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffix}'
+var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
+var keyVaultDeploymentName = '${keyVaultName}-${deploymentNameSuffix}'
 module webjobStorage 'modules/storageAccount.bicep' = {
-  name: 'webjobsStorage${deploymentNameSuffix}'
+  name: webjobsStorageDeploymentName
   params: {
     location: location
     skuName: storageAccountSkuName
@@ -41,7 +48,7 @@ module webjobStorage 'modules/storageAccount.bicep' = {
 }
 
 module reportingStorage 'modules/storageAccount.bicep' = {
-  name: 'reportingStorage${deploymentNameSuffix}'
+  name: reportingStorageDeploymentName
   params: {
     location: location
     skuName: storageAccountSkuName
@@ -52,7 +59,7 @@ module reportingStorage 'modules/storageAccount.bicep' = {
 }
 
 module reportQueue 'modules/storageQueue.bicep' = {
-  name: 'reportQueue${deploymentNameSuffix}'
+  name: reportQueueDeploymentName
   params: {
     queueName: reportRequestQueueName
     storageAccountName: reportingStorageAccountName
@@ -63,11 +70,19 @@ module reportQueue 'modules/storageQueue.bicep' = {
 }
 
 module appService 'modules/appService.bicep' = {
-  name: 'appService${deploymentNameSuffix}'
+  name: appServiceDeploymentName
   params: {
     location: location
     skuName: appServiceSkuName
     skuCapacity: appServiceSkuCapacity
     appName: appServiceName
+  }
+}
+
+module keyVault 'modules/keyVault.bicep' = {
+  name: keyVaultDeploymentName
+  params: {
+    keyVaultName: keyVaultName
+    tenantId: subscription().tenantId
   }
 }
