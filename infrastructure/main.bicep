@@ -36,6 +36,6 @@ module reportQueue 'modules/storageQueue.bicep' = {
     storageAccountName: reportingStorageAccountName
   }
   dependsOn: [
-    reportingStorage
+    reportingStorage // Manual dependsOn required here because the modules are not aware of each other
   ]
 }
