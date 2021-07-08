@@ -1,7 +1,7 @@
 param storageAccountName string
 param queueName string
 
-var fullQueueName = '${storageAccountName}/${queueName}'
+var fullQueueName = '${storageAccountName}/default/${queueName}'
 
 resource storageQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-01-01' = {
   name: fullQueueName
