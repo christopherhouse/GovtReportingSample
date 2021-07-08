@@ -1,3 +1,5 @@
+param deploymentNameSuffix string
+
 @description('The storage accout sku to provision.  Optional, defaults to Standard_LRS')
 param storageAccountSkuName string = 'Standard_LRS'
 
@@ -28,7 +30,7 @@ param appServiceSkuCapacity int
 var location = resourceGroup().location
 
 module webjobStorage 'modules/storageAccount.bicep' = {
-  name: 'webjobsStorage'
+  name: 'webjobsStorage${deploymentNameSuffix}'
   params: {
     location: location
     skuName: storageAccountSkuName
@@ -39,7 +41,7 @@ module webjobStorage 'modules/storageAccount.bicep' = {
 }
 
 module reportingStorage 'modules/storageAccount.bicep' = {
-  name: 'reportingStorage'
+  name: 'reportingStorage${deploymentNameSuffix}'
   params: {
     location: location
     skuName: storageAccountSkuName
@@ -50,7 +52,7 @@ module reportingStorage 'modules/storageAccount.bicep' = {
 }
 
 module reportQueue 'modules/storageQueue.bicep' = {
-  name: 'reportQueue'
+  name: 'reportQueue${deploymentNameSuffix}'
   params: {
     queueName: reportRequestQueueName
     storageAccountName: reportingStorageAccountName
@@ -61,7 +63,7 @@ module reportQueue 'modules/storageQueue.bicep' = {
 }
 
 module appService 'modules/appService.bicep' = {
-  name: 'appService'
+  name: 'appService${deploymentNameSuffix}'
   params: {
     location: location
     skuName: appServiceSkuName

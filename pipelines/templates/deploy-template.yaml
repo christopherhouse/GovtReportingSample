@@ -43,5 +43,7 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   $date = Get-Date
-                  $deploymentName = $date.ToString("yyyy-MM-dd-hh-mm-ss")
-                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/main.json --parameters reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName) appServiceName=$(appServiceName) appServiceSkuName=$(appServiceSkuName) appServiceSkuCapacity=$(appServiceSkuCapacity)
+                  $deploymentNameSuffix = $date.ToString("yyyy-MM-dd-hh-mm-ss")
+                  $deploymentName = "main-${deploymentSuffix}"
+                  
+                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/main.json --parameters deploymentNameSuffix=$deploymentNameSuffix reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName) appServiceName=$(appServiceName) appServiceSkuName=$(appServiceSkuName) appServiceSkuCapacity=$(appServiceSkuCapacity)
