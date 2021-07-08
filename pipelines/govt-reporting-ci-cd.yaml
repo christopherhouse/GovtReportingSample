@@ -60,14 +60,14 @@ stages:
          copy $(Build.SourcesDirectory)\infrastructure\main.* $(Build.ArtifactStagingDirectory)\infrastructure\
 
     - task: PublishPipelineArtifact@1
-      displayName: Publish artifact
+      displayName: Publish web app artifact
       inputs:
        targetPath: $(Build.ArtifactStagingDirectory)\GovtReportingDemo.zip
        artifact: build
        publishLocation: pipeline
 
     - task: PublishPipelineArtifact@1
-      displayName: Publish artifact
+      displayName: Publish infrastructure artifact
       inputs:
        targetPath: $(Build.ArtifactStagingDirectory)\infrastructure
        artifact: infrastructure
