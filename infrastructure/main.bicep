@@ -1,7 +1,7 @@
 param storageAccountSkuName string = 'Standard_LRS'
 param storageSkuTier string = 'Standard'
 param storageAccessTier string = 'Hot'
-param webjobsStorageAccountName string
+param webJobsStorageAccountName string
 param reportingStorageAccountName string
 param reportRequestQueueName string
 
@@ -14,7 +14,7 @@ module webjobStorage 'modules/storageAccount.bicep' = {
     skuName: storageAccountSkuName
     skuTier: storageSkuTier
     storageAccessTier: storageAccessTier
-    storageAccountName: webjobsStorageAccountName
+    storageAccountName: webJobsStorageAccountName
   }
 }
 
