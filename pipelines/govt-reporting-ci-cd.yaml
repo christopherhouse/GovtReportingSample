@@ -52,7 +52,7 @@ stages:
       displayName: Build Bicep template
       inputs:
        azureSubscription: AIRS
-       scriptType: batch
+       scriptType: ps
        scriptLocation: inlineScript
        inlineScript: |
          az bicep install
