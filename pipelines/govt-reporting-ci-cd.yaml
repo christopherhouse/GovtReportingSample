@@ -47,11 +47,22 @@ stages:
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+    
+    - task: AzureCLI@2
+      displayName: Build Bicep template
+      inputs:
+       azureSubscription: AIRS
+       scriptType: batch
+       scriptLocation: inlineScript
+       inlineScript: |
+         az bicep install
+         az bicep build -f $(Build.SourcesDirectory)\infrastructure\main.bicep
+         copy $(Build.SourcesDirectory)\infrastructure\main.* $(Build.ArtifactStagingDirectory)\infrastructure\
 
     - task: PublishPipelineArtifact@1
       displayName: Publish artifact
       inputs:
-       targetPath: $(Build.ArtifactStagingDirectory)/GovtReportingDemo.zip
+       targetPath: $(Build.ArtifactStagingDirectory)\GovtReportingDemo.zip
        artifact: build
        publishLocation: pipeline
 
