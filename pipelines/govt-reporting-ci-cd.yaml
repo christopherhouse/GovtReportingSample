@@ -57,8 +57,8 @@ stages:
        inlineScript: |
          az bicep install
          az bicep build -f $(Build.SourcesDirectory)\infrastructure\main.bicep
-         mkdir 
-         xcopy $(Build.SourcesDirectory)\infrastructure\main.* $(Build.ArtifactStagingDirectory)\infrastructure\
+         mkdir $(Build.ArtifactStagingDirectory)\infrastructure\
+         copy $(Build.SourcesDirectory)\infrastructure\main.* $(Build.ArtifactStagingDirectory)\infrastructure\
 
     - task: PublishPipelineArtifact@1
       displayName: Publish web app artifact
@@ -70,6 +70,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish infrastructure artifact
       inputs:
-       targetPath: $(Build.ArtifactStagingDirectory)\infrastructure
+       targetPath: $(Build.ArtifactStagingDirectory)\infrastructure\
        artifact: infrastructure
        publishLocation: pipeline
