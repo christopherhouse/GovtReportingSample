@@ -70,6 +70,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish infrastructure artifact
       inputs:
-       targetPath: $(Build.ArtifactStagingDirectory)\infrastructure
+       targetPath: $(Build.ArtifactStagingDirectory)\infrastructure\
        artifact: infrastructure
        publishLocation: pipeline
