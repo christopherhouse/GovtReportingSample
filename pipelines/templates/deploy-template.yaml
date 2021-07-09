@@ -47,3 +47,12 @@ stages:
                   $deploymentName = "main-${deploymentNameSuffix}"
                   
                   az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/main.json --parameters deploymentNameSuffix=$deploymentNameSuffix reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName) appServiceName=$(appServiceName) appServiceSkuName=$(appServiceSkuName) appServiceSkuCapacity=$(appServiceSkuCapacity) keyVaultName=$(keyVaultName) accessPolicyTargetObjectId=$(accessPolicyTargetObjectId)
+            
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy web app'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: ${{ parameters.serviceConnection }}
+                 appType: 'webApp'
+                 WebAppName: $(appServiceName)
+                 Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
