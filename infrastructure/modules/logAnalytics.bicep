@@ -12,3 +12,5 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview'
     retentionInDays: retentionDays
   }
 }
+
+output workspaceId string = workspace.id

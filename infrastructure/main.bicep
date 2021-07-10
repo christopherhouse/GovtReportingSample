@@ -33,8 +33,14 @@ param keyVaultName string
 @description('Object ID Key Vault access policy will be assigned to')
 param accessPolicyTargetObjectId string
 
+@description('Indicates whether App Insights and Log Analytics resources should be created.  Optional, defaults to true.')
+param createAppInsights bool = true
+
 @description('Name of the Log Analytics workspace to provision')
 param logAnalticsWorkspaceName string
+
+@description('Name of the App Insights resource to provision')
+param appInsightsName string
 
 var location = resourceGroup().location
 var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
@@ -43,6 +49,7 @@ var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffi
 var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentNameSuffix}'
 var logAnalyticsDeploymentName = '${logAnalticsWorkspaceName}-${deploymentNameSuffix}'
+var appInsightsDeploymentName = '${appInsightsName}-${deploymentNameSuffix}'
 
 module webjobStorage 'modules/storageAccount.bicep' = {
   name: webjobsStorageDeploymentName
@@ -97,10 +104,19 @@ module keyVault 'modules/keyVault.bicep' = {
   }
 }
 
-module logAnalytics 'modules/logAnalytics.bicep' = {
+module logAnalytics 'modules/logAnalytics.bicep' = if(createAppInsights) {
   name: logAnalyticsDeploymentName
   params: {
-    workspaceName: logAnalyticsWorkspaceName
+    workspaceName: logAnalticsWorkspaceName
     location: location
+  }
+}
+
+module appInsights 'modules/appInsigts.bicep' = if(createAppInsights) {
+  name: appInsightsDeploymentName
+  params: {
+    appInsightsName: appInsightsName
+    location: location
+    logAnalyticsWorkspaceId: logAnalytics.outputs.workspaceId
   }
 }
