@@ -33,12 +33,17 @@ param keyVaultName string
 @description('Object ID Key Vault access policy will be assigned to')
 param accessPolicyTargetObjectId string
 
+@description('Name of the Log Analytics workspace to provision')
+param logAnalticsWorkspaceName string
+
 var location = resourceGroup().location
 var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
 var reportingStorageDeploymentName = '${reportingStorageAccountName}-${deploymentNameSuffix}'
 var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffix}'
 var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentNameSuffix}'
+var logAnalyticsDeploymentName = '${logAnalticsWorkspaceName}-${deploymentNameSuffix}'
+
 module webjobStorage 'modules/storageAccount.bicep' = {
   name: webjobsStorageDeploymentName
   params: {
@@ -89,5 +94,13 @@ module keyVault 'modules/keyVault.bicep' = {
     tenantId: subscription().tenantId
     location: location
     accessPolicyTargetObjectId: accessPolicyTargetObjectId
+  }
+}
+
+module logAnalytics 'modules/logAnalytics.bicep' = {
+  name: logAnalyticsDeploymentName
+  params: {
+    workspaceName: logAnalyticsWorkspaceName
+    location: location
   }
 }
