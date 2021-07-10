@@ -91,6 +91,8 @@ module appService 'modules/appService.bicep' = {
     skuName: appServiceSkuName
     skuCapacity: appServiceSkuCapacity
     appName: appServiceName
+    enableAppInsights: createAppInsights
+    appInsightsInstrumentationKey: createAppInsights ? appInsights.outputs.appInsightsInstrumentationKey : any(null)
   }
 }
 
