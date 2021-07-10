@@ -76,14 +76,14 @@ stages:
 
 - template: templates/deploy-template.yaml
   parameters:
-    stageName: Deploy Development
+    stageName: Development
     environmentName: govt-rpt-dev
     variableGroupName: GOVT-REPORTING-DEV
     serviceConnection: AIRS
 
 - template: templates/deploy-template.yaml
   parameters:
-    stageName: Deploy Production
+    stageName: Production
     environmentName: govt-rpt-prod
     variableGroupName: GOVT-REPORTING-PROD
     serviceConnection: MSDN
