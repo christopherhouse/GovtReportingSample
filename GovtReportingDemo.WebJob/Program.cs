@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -28,8 +29,15 @@ namespace GovtReportingDemo.WebJob
                 }
             });
 
+            builder.ConfigureAppConfiguration(_ =>
+            {
+                _.AddJsonFile("appsettings.json")
+                    .AddEnvironmentVariables()
+                    .AddUserSecrets<Program>();
+            });
+
 #if DEBUG
-            builder.UseEnvironment("development");
+            builder.UseEnvironment(EnvironmentName.Development);
 #endif
 
             var host = builder.Build();
