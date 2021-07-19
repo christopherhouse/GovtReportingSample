@@ -42,6 +42,15 @@ param logAnalticsWorkspaceName string
 @description('Name of the App Insights resource to provision')
 param appInsightsName string
 
+@description('The name of the Function app to create')
+param functionAppName string
+
+@description('The name of the App Insights resource to create for the Function app')
+param functionAppAppInsightsName string
+
+@description('The name of the storage account to create for the Function app')
+param functionAppStorageAccountName string
+
 var location = resourceGroup().location
 var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
 var reportingStorageDeploymentName = '${reportingStorageAccountName}-${deploymentNameSuffix}'
@@ -50,6 +59,8 @@ var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentNameSuffix}'
 var logAnalyticsDeploymentName = '${logAnalticsWorkspaceName}-${deploymentNameSuffix}'
 var appInsightsDeploymentName = '${appInsightsName}-${deploymentNameSuffix}'
+var functionAppAppInsightsDeploymentName = '${functionAppAppInsightsName}-${deploymentNameSuffix}'
+var functionAppDeploymentName = '${functionAppName}-${deploymentNameSuffix}'
 
 module webjobStorage 'modules/storageAccount.bicep' = {
   name: webjobsStorageDeploymentName
@@ -120,5 +131,24 @@ module appInsights 'modules/appInsigts.bicep' = if(createAppInsights) {
     appInsightsName: appInsightsName
     location: location
     logAnalyticsWorkspaceId: logAnalytics.outputs.workspaceId
+  }
+}
+
+module functionAppAppInsights 'modules/appInsigts.bicep' = if(createAppInsights) {
+  name: functionAppAppInsightsDeploymentName
+  params: {
+    appInsightsName: functionAppAppInsightsName
+    location: location
+    logAnalyticsWorkspaceId: logAnalytics.outputs.workspaceId
+  }
+}
+
+module functionApp 'modules/functionApp.bicep' = {
+  name: functionAppDeploymentName
+  params: {
+    functionAppName: functionAppName
+    location: location
+    storageAccountName: functionAppStorageAccountName
+    appInsightsKey: functionAppAppInsights.outputs.appInsightsInstrumentationKey
   }
 }

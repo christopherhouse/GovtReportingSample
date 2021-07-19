@@ -46,7 +46,7 @@ stages:
                   $deploymentNameSuffix = $date.ToString("yyyy-MM-dd-hh-mm-ss")
                   $deploymentName = "main-${deploymentNameSuffix}"
                   
-                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/maintemplate.json --parameters deploymentNameSuffix=$deploymentNameSuffix reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName) appServiceName=$(appServiceName) appServiceSkuName=$(appServiceSkuName) appServiceSkuCapacity=$(appServiceSkuCapacity) keyVaultName=$(keyVaultName) accessPolicyTargetObjectId=$(accessPolicyTargetObjectId) logAnalticsWorkspaceName=$(logAnalticsWorkspaceName) appInsightsName=$(appInsightsName)
+                  az deployment group create -g $(resourceGroupName) -n $deploymentName --template-file $(Pipeline.Workspace)/infrastructure/maintemplate.json --parameters deploymentNameSuffix=$deploymentNameSuffix reportRequestQueueName=$(reportRequestQueueName) webJobsStorageAccountName=$(webJobsStorageAccountName) reportingStorageAccountName=$(reportingStorageAccountName) appServiceName=$(appServiceName) appServiceSkuName=$(appServiceSkuName) appServiceSkuCapacity=$(appServiceSkuCapacity) keyVaultName=$(keyVaultName) accessPolicyTargetObjectId=$(accessPolicyTargetObjectId) logAnalticsWorkspaceName=$(logAnalticsWorkspaceName) appInsightsName=$(appInsightsName) functionAppName=$(functionAppName) functionAppAppInsightsName=$(functionAppAppInsightsName) functionAppStorageAccountName=$(functionAppStorageAccountName)
             
             - task: AzureRmWebAppDeployment@4
               displayName: 'Deploy web app'
