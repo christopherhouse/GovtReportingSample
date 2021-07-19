@@ -9,9 +9,6 @@ param storageSkuTier string = 'Standard'
 @description('Access tier for storage account.  Optional, defaults to Hot')
 param storageAccessTier string = 'Hot'
 
-@description('The name of the storage account to provision for Web Job storage')
-param webJobsStorageAccountName string
-
 @description('the name of the storage account to provision for report storage')
 param reportingStorageAccountName string
 
@@ -52,7 +49,6 @@ param functionAppAppInsightsName string
 param functionAppStorageAccountName string
 
 var location = resourceGroup().location
-var webjobsStorageDeploymentName = '${webJobsStorageAccountName}-${deploymentNameSuffix}'
 var reportingStorageDeploymentName = '${reportingStorageAccountName}-${deploymentNameSuffix}'
 var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffix}'
 var appServiceDeploymentName = '${appServiceName}-${deploymentNameSuffix}'
@@ -61,17 +57,6 @@ var logAnalyticsDeploymentName = '${logAnalticsWorkspaceName}-${deploymentNameSu
 var appInsightsDeploymentName = '${appInsightsName}-${deploymentNameSuffix}'
 var functionAppAppInsightsDeploymentName = '${functionAppAppInsightsName}-${deploymentNameSuffix}'
 var functionAppDeploymentName = '${functionAppName}-${deploymentNameSuffix}'
-
-module webjobStorage 'modules/storageAccount.bicep' = {
-  name: webjobsStorageDeploymentName
-  params: {
-    location: location
-    skuName: storageAccountSkuName
-    skuTier: storageSkuTier
-    storageAccessTier: storageAccessTier
-    storageAccountName: webJobsStorageAccountName
-  }
-}
 
 module reportingStorage 'modules/storageAccount.bicep' = {
   name: reportingStorageDeploymentName
