@@ -55,4 +55,4 @@ stages:
                 azureSubscription: ${{ parameters.serviceConnection }}
                 appType: 'webApp'
                 WebAppName: $(appServiceName)
-                Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
+                Package: '$(Pipeline.Workspace)/webApp/'
