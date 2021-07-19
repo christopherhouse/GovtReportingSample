@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovtReportingDemo", "GovtRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovtReportingDemo.WebJob", "GovtReportingDemo.WebJob\GovtReportingDemo.WebJob.csproj", "{7B2E9678-6D6F-4920-AF31-D9D35A3A3C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovtReportingDemo.Shared", "GovtReportingDemo.Shared\GovtReportingDemo.Shared.csproj", "{12FC2B62-3F6F-487C-A80D-64966C0E21E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovtReportingDemo.Shared", "GovtReportingDemo.Shared\GovtReportingDemo.Shared.csproj", "{12FC2B62-3F6F-487C-A80D-64966C0E21E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovtReportingDemo.Functions", "GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj", "{BC9A3E19-0EB8-4537-8A45-125E50E42D5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{12FC2B62-3F6F-487C-A80D-64966C0E21E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12FC2B62-3F6F-487C-A80D-64966C0E21E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12FC2B62-3F6F-487C-A80D-64966C0E21E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9A3E19-0EB8-4537-8A45-125E50E42D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9A3E19-0EB8-4537-8A45-125E50E42D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9A3E19-0EB8-4537-8A45-125E50E42D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9A3E19-0EB8-4537-8A45-125E50E42D5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
