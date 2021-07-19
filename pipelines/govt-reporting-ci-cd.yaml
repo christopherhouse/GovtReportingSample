@@ -47,7 +47,14 @@ stages:
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-    
+        
+    - task: DotNetCoreCLI@2
+      displayName: Publish Web Job
+      inputs:
+       command: publish
+       projects: $(System.DefaultWorkingDirectory)/GovtReportingDemo.WebJob/GovtReportingDemo.WebJob.csproj
+       arguments: --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\App_Data\jobs\continuous\GovtReportingDemoWebJob
+
     - task: AzureCLI@2
       displayName: Build Bicep template
       inputs:
