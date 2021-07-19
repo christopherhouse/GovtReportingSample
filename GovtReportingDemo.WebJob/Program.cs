@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -6,7 +6,7 @@ namespace GovtReportingDemo.WebJob
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var builder = new HostBuilder();
 
@@ -20,7 +20,7 @@ namespace GovtReportingDemo.WebJob
             {
                 _.AddConsole();
 
-                var appInsightsKey = ctx.Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+                var appInsightsKey = ctx.Configuration["AppInsightsInstrumentationKey"];
 
                 if (!string.IsNullOrWhiteSpace(appInsightsKey))
                 {
