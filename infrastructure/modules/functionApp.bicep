@@ -3,7 +3,7 @@ param location string
 param storageAccountName string
 param appInsightsKey string
 
-var planName = '${functionAppName}-plan'
+var planName = 'asp-${functionAppName}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-01-01' = {
   name: storageAccountName
@@ -105,5 +105,40 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
     dailyMemoryTimeQuota: 0
     httpsOnly: true
     redundancyMode: 'None'
+  }
+}
+
+resource functionAppConfig 'Microsoft.Web/sites/config@2020-06-01' = {
+  parent: functionApp
+  name: 'web'
+  properties: {
+    numberOfWorkers: -1
+    defaultDocuments: [
+      'Default.htm'
+      'Default.html'
+      'Default.asp'
+      'index.htm'
+      'index.html'
+      'iisstart.htm'
+      'default.aspx'
+      'index.php'
+      'hostingstart.html'
+    ]    
+    netFrameworkVersion: 'v4.0'
+    phpVersion: '5.6'
+    requestTracingEnabled: false
+    remoteDebuggingEnabled: false
+    httpLoggingEnabled: false
+    logsDirectorySizeLimit: 35
+    detailedErrorLoggingEnabled: false
+    publishingUserName: '$${functionAppName}'
+    scmType: 'None'
+    cors: {
+      allowedOrigins: [
+        'https://functions.azure.com'
+        'https://functions-staging.azure.com'
+        'https://functions-next.azure.com'
+      ]
+    }
   }
 }
