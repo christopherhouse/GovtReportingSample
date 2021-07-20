@@ -29,11 +29,15 @@ stages:
             steps:
             - download: current
               artifact: webApp
-              displayName: Downlaod web app artifact
+              displayName: Downlaod Web app artifact
             
             - download: current
               artifact: infrastructure
               displayName: Download infrastructure artifact
+
+            - download: current
+              artifact: functionApp
+              displayName: Download Function app artifact
             
             - task: AzureCLI@2
               displayName: Deploy infrastructure
