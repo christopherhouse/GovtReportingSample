@@ -37,7 +37,7 @@ stages:
     - task: VSBuild@1
       displayName: Build solution
       inputs:
-        solution: '$(solution)'
+        solution: '$(System.DefaultWorkingDirectory)\GovtReportingDemo\GovtReportingDemo.csproj'
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\web"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
@@ -54,6 +54,26 @@ stages:
        command: publish
        projects: $(System.DefaultWorkingDirectory)/GovtReportingDemo.WebJob/GovtReportingDemo.WebJob.csproj
        arguments: --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\web\App_Data\jobs\continuous\GovtReportingDemoWebJob
+
+    - task: DotNetCoreCLI@2
+      displayName: dotnet restore for Function project
+      inputs:
+        command: restore
+        projects: $(System.DefaultWorkingDirectory)\GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj
+
+    - task: DotNetCoreCLI@2
+      displayName: Build Function project
+      inputs:
+        command: build
+        projects: $(System.DefaultWorkingDirectory)\GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj
+    
+    - task: DotNetCoreCLI@2
+      displayName: Publish Function project
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: $(System.DefaultWorkingDirectory)\GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj
+        arguments: --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\function\
 
     - task: AzureCLI@2
       displayName: Build Bicep template
@@ -80,6 +100,13 @@ stages:
        targetPath: $(Build.ArtifactStagingDirectory)\infrastructure\
        artifact: infrastructure
        publishLocation: pipeline
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish Function artifact
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)\function\
+        artifact: FunctionApp
+        publishLocation: pipeline
 
 - template: templates/deploy-template.yaml
   parameters:
