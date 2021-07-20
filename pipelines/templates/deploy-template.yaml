@@ -61,11 +61,11 @@ stages:
                 WebAppName: $(appServiceName)
                 Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
             
-            -task: AzureFunctionApp@1
-             displayName: Deploy Function app
-             inputs:
-               azureSubscription: ${{ parameters.serviceConnection }}
-               appType: functionApp
-               appName: $(functionAppName)
-               package: $(Pipeline.Workspace)\functionApp\GovtReportingDemo.Functions.zip
+            - task: AzureFunctionApp@1
+              displayName: Deploy Function app
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnection }}
+                appType: functionApp
+                appName: $(functionAppName)
+                package: $(Pipeline.Workspace)\functionApp\GovtReportingDemo.Functions.zip
 
