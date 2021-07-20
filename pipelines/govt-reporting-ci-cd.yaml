@@ -47,25 +47,22 @@ stages:
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-        
-    - task: DotNetCoreCLI@2
-      displayName: Publish Web Job
-      inputs:
-       command: publish
-       projects: $(System.DefaultWorkingDirectory)/GovtReportingDemo.WebJob/GovtReportingDemo.WebJob.csproj
-       arguments: --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\web\App_Data\jobs\continuous\GovtReportingDemoWebJob
-
-    - task: DotNetCoreCLI@2
-      displayName: dotnet restore for Function project
-      inputs:
-        command: restore
-        projects: $(System.DefaultWorkingDirectory)\GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj
 
     - task: DotNetCoreCLI@2
       displayName: Build Function project
       inputs:
         command: build
         projects: $(System.DefaultWorkingDirectory)\GovtReportingDemo.Functions\GovtReportingDemo.Functions.csproj
+        arguments: --outpuit $(System.DefaultWorkingDirectory)\function_output\ --configuration $(buildConfiguration)
+
+    - task: ArchiveFiles@2
+      displayName: Zip Function app output
+      inputs:
+        rootFolderOrFile: $(System.DefaultWorkingDirectory)\function_output\
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)\function\GovtReportingDemo.Functions.zip
+        replaceExistingArchive: true
     
     - task: DotNetCoreCLI@2
       displayName: Publish Function project
@@ -105,7 +102,7 @@ stages:
       displayName: Publish Function artifact
       inputs:
         targetPath: $(Build.ArtifactStagingDirectory)\function\
-        artifact: FunctionApp
+        artifact: functionApp
         publishLocation: pipeline
 
 - template: templates/deploy-template.yaml
