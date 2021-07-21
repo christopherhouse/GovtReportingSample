@@ -76,7 +76,6 @@ stages:
                 scriptType: ps
                 scriptLocation: inlineScript
                 inlineScript: |
-                  $webJobsStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(functionAppStorageAccountName) -o tsv) | Out-String
                   $reportRequestStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(reportingStorageAccountName) -o tsv) | Out-String
-                  az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "AzureWebJobsStorage=$webJobsStorageConnectionString reportRequestStorageConnectionString=$(reportRequestStorageConnectionString) reportRequestQueueName=$(reportRequestQueueName)"
+                  az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "reportRequestStorageConnectionString=$reportRequestStorageConnectionString reportRequestQueueName=$(reportRequestQueueName)"
 
