@@ -77,5 +77,5 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   $reportRequestStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(reportingStorageAccountName) -o tsv) | Out-String
-                  az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "reportRequestStorageConnectionString=$reportRequestStorageConnectionString reportRequestQueueName=$(reportRequestQueueName)"
+                  az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "reportRequestStorageConnectionString=$reportRequestStorageConnectionString" "reportRequestQueueName=$(reportRequestQueueName)"
 
