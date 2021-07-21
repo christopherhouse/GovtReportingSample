@@ -68,4 +68,15 @@ stages:
                 appType: functionApp
                 appName: $(functionAppName)
                 package: $(Pipeline.Workspace)\functionApp\GovtReportingDemo.Functions.zip
+            
+            - task: AzureCLI@2
+              displayName: Set Function app App Settings
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnection }}
+                scriptType: ps
+                scriptLocation: inlineScript
+                inlineScript: |
+                  $webJobsStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(functionAppStorageAccountName) -o tsv) | Out-String
+                  $reportRequestStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(reportingStorageAccountName) -o tsv) | Out-String
+                  az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "AzureWebJobsStorage=$webJobsStorageConnectionString reportRequestStorageConnectionString=$(reportRequestStorageConnectionString) reportRequestQueueName=$(reportRequestQueueName)"
 
