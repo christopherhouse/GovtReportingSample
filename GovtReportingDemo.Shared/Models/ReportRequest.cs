@@ -5,9 +5,9 @@ namespace GovtReportingDemo.Shared.Models
 {
     public class ReportRequest
     {
-        public DateTime ReportingDateRangeStart { get; set; }
+        public DateTime? ReportingDateRangeStart { get; set; }
         
-        public DateTime ReportingDateRangeEnd { get; set; }
+        public DateTime? ReportingDateRangeEnd { get; set; }
 
         public static ReportRequest FromJson(string json)
         {

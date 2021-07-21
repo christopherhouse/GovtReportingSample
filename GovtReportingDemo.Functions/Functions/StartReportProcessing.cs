@@ -1,6 +1,7 @@
 using System;
 using GovtReportingDemo.Shared.Models;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -16,11 +17,12 @@ namespace GovtReportingDemo.Functions.Functions
         }
 
         [FunctionName("StartReportProcessing")]
-        public void Run([QueueTrigger("%reportRequestQueueName%", Connection = "reportRequestStorageConnectionString")]string myQueueItem)
+        public void Run([QueueTrigger("%reportRequestQueueName%", Connection = "reportRequestStorageConnectionString")]string myQueueItem,
+            [DurableClient] IDurableClient starter)
         {
             var model = ReportRequest.FromJson(myQueueItem);
 
-            if (model != null)
+            if (model.ReportingDateRangeStart != null && model.ReportingDateRangeEnd != null)
             {
                 _logger.LogInformation($"Successfully deserialized queue message, start date = {model.ReportingDateRangeStart}, end date = {model.ReportingDateRangeEnd}");
             }
