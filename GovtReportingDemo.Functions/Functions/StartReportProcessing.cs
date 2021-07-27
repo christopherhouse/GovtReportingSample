@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using GovtReportingDemo.Shared.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
@@ -17,7 +18,7 @@ namespace GovtReportingDemo.Functions.Functions
         }
 
         [FunctionName("StartReportProcessing")]
-        public void Run([QueueTrigger("%reportRequestQueueName%", Connection = "reportRequestStorageConnectionString")]string myQueueItem,
+        public async Task Run([QueueTrigger("%reportRequestQueueName%", Connection = "reportRequestStorageConnectionString")]string myQueueItem,
             [DurableClient] IDurableClient starter)
         {
             var model = ReportRequest.FromJson(myQueueItem);
@@ -25,6 +26,10 @@ namespace GovtReportingDemo.Functions.Functions
             if (model.ReportingDateRangeStart != null && model.ReportingDateRangeEnd != null)
             {
                 _logger.LogInformation($"Successfully deserialized queue message, start date = {model.ReportingDateRangeStart}, end date = {model.ReportingDateRangeEnd}");
+
+                var instanceId = await starter.StartNewAsync("Orchestrator", model);
+                
+                _logger.LogInformation($"Started durable orchestration instance {instanceId}");
             }
             else
             {
