@@ -4,6 +4,8 @@ param location string
 param appName string
 param enableAppInsights bool
 param appInsightsInstrumentationKey string = any(null)
+param createStagingSlot bool = false
+param stagingSlotName string = 'staging'
 
 var appServicePlanName = 'asp-${appName}'
 
@@ -28,7 +30,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-resource appServiceAppSettings 'Microsoft.Web/sites/config@2020-06-01' = if(enableAppInsights) {
+resource appServiceAppSettings 'Microsoft.Web/sites/config@2021-01-15' = if(enableAppInsights) {
   name: '${appService.name}/appsettings'
   properties: {
     APPINSIGHTS_INSTRUMENTATIONKEY: appInsightsInstrumentationKey
@@ -37,4 +39,21 @@ resource appServiceAppSettings 'Microsoft.Web/sites/config@2020-06-01' = if(enab
 
 resource appServiceSiteExtension 'Microsoft.Web/sites/siteextensions@2020-06-01' = if(enableAppInsights) {
   name: '${appService.name}/Microsoft.ApplicationInsights.AzureWebsites'  
+}
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2021-01-15' = if(createStagingSlot) {
+  parent: appService
+  name: stagingSlotName
+  location: location
+  kind: 'webapp'
+  properties: {
+    serverFarmId: appServicePlan.id
+  }
+}
+
+resource stagingSlotAppConfig 'Microsoft.Web/sites/config@2021-01-15' = if(enableAppInsights && createStagingSlot) {
+  name: '${stagingSlot.name}/appsettings'
+  properties: {
+    APPINSIGHTS_INSTRUMENTATIONKEY: appInsightsInstrumentationKey
+  }
 }

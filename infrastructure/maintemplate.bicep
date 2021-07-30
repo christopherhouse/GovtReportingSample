@@ -48,6 +48,12 @@ param functionAppAppInsightsName string
 @description('The name of the storage account to create for the Function app')
 param functionAppStorageAccountName string
 
+@description('Flag indicating whether or not to create staging deployment slots on the web app and function app')
+param createStagingSlots bool = false
+
+@description('Nname for the staging slot.  Defaults to staging')
+param stagingSlotName string = 'staging'
+
 var location = resourceGroup().location
 var reportingStorageDeploymentName = '${reportingStorageAccountName}-${deploymentNameSuffix}'
 var reportQueueDeploymentName = '${reportRequestQueueName}-${deploymentNameSuffix}'
@@ -89,6 +95,8 @@ module appService 'modules/appService.bicep' = {
     appName: appServiceName
     enableAppInsights: createAppInsights
     appInsightsInstrumentationKey: createAppInsights ? appInsights.outputs.appInsightsInstrumentationKey : any(null)
+    createStagingSlot: createStagingSlots
+    stagingSlotName: stagingSlotName
   }
 }
 
