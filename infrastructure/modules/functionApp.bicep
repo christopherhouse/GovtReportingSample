@@ -2,6 +2,8 @@ param functionAppName string
 param location string
 param storageAccountName string
 param appInsightsKey string
+param createStagingSlot bool = false
+param stagingSlotName string = 'staging'
 
 var planName = 'asp-${functionAppName}'
 
@@ -144,5 +146,22 @@ resource functionAppConfig 'Microsoft.Web/sites/config@2020-06-01' = {
         'https://functions-next.azure.com'
       ]
     }
+  }
+}
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2021-01-15' = if(createStagingSlot) {
+  parent: functionApp
+  name: stagingSlotName
+  location: location
+  kind: 'functionapp'
+  properties: {
+    serverFarmId: functionAppPlan.id
+  }
+}
+
+resource slotConfig 'Microsoft.Web/sites/config@2021-01-15' = if(createStagingSlot) {
+  name: '${stagingSlot.name}/appsettings'
+  properties: {
+    APPINSIGHTS_INSTRUMENTATIONKEY: appInsightsKey
   }
 }
