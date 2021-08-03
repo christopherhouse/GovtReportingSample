@@ -42,8 +42,7 @@ resource appServiceSiteExtension 'Microsoft.Web/sites/siteextensions@2020-06-01'
 }
 
 resource stagingSlot 'Microsoft.Web/sites/slots@2021-01-15' = if(createStagingSlot) {
-  parent: appService
-  name: stagingSlotName
+  name: '${appService.name}/${stagingSlotName}'
   location: location
   kind: 'webapp'
   properties: {

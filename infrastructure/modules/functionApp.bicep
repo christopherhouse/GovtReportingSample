@@ -150,8 +150,7 @@ resource functionAppConfig 'Microsoft.Web/sites/config@2020-06-01' = {
 }
 
 resource stagingSlot 'Microsoft.Web/sites/slots@2021-01-15' = if(createStagingSlot) {
-  parent: functionApp
-  name: stagingSlotName
+  name: '${functionApp.name}/${stagingSlotName}'
   location: location
   kind: 'functionapp'
   properties: {
