@@ -143,5 +143,7 @@ module functionApp 'modules/functionApp.bicep' = {
     location: location
     storageAccountName: functionAppStorageAccountName
     appInsightsKey: functionAppAppInsights.outputs.appInsightsInstrumentationKey
+    createStagingSlot: createStagingSlots
+    stagingSlotName: stagingSlotName
   }
 }
