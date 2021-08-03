@@ -51,7 +51,7 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2021-01-15' = if(createStagingSl
 }
 
 resource stagingSlotAppConfig 'Microsoft.Web/sites/slots/config@2021-01-15' = if(enableAppInsights && createStagingSlot) {
-  name: '${appService.name}/${stagingSlot.name}/appsettings'
+  name: '${stagingSlot.name}/appsettings'
   properties: {
     APPINSIGHTS_INSTRUMENTATIONKEY: appInsightsInstrumentationKey
   }
