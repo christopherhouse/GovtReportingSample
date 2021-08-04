@@ -96,7 +96,7 @@ stages:
     
     - job: waitForValidation
       displayName: Wait for Validation
-      condition: eq(parameters['deployToSlot'], 'True')
+      condition: eq('${{ parameters.deployToSlot }}', 'True')
       dependsOn: Deploy
       variables:
       - group: ${{ parameters.variableGroupName }}
