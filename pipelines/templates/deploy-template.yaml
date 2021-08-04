@@ -77,6 +77,11 @@ stages:
                 appType: functionApp
                 appName: $(functionAppName)
                 package: $(Pipeline.Workspace)\functionApp\GovtReportingDemo.Functions.zip
+                deployToSlotOrASE: true
+                ${{ if eq(parameters['deployToSlot'], 'True') }}:
+                  slotName: $(stagingSlotName)
+                ${{ if eq(parameters['deployToSlot'], 'Fasle') }}:
+                  slotName: production                
             
             - task: AzureCLI@2
               displayName: Set Function app App Settings
