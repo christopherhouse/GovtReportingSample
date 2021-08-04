@@ -108,13 +108,32 @@ stages:
           instructions: Please validate the web app and function app staging slots before approving
           timeout: 1440
           onTimeout: reject
-            # - task: AzureAppServiceManage@0
-            #   displayName: Swap web app slots
-            #   inputs:
-            #     azureSubscription: ${{ parameters.serviceConnection }}
-            #     webAppName: $(appServiceName)
-            #     Action: Swap Slots
-            #     ResourceGroupName: $(resourceGroupName)
-            #     SourceSlot: $(stagingSlotName)
-            #     TargetSlot: production
+    
+    - job: swapSlots
+      displayName: Swap staging and production slots
+      condition: eq('${{ parameters.deployToSlot }}', 'True')
+      dependsOn: waitForValidation
+      variables:
+      - group: ${{ parameters.variableGroupName }}
+      pool:
+        vmImage: windows-latest
+      steps:
+      - task: AzureAppServiceManage@0
+        displayName: Swap web app slots
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          webAppName: $(appServiceName)
+          Action: Swap Slots
+          ResourceGroupName: $(resourceGroupName)
+          SourceSlot: $(stagingSlotName)
+          TargetSlot: production
 
+      - task: AzureAppServiceManage@0
+        displayName: Swap function app slots
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          webAppName: $(functionAppName)
+          Action: Swap Slots
+          ResourceGroupName: $(resourceGroupName)
+          SourceSlot: $(stagingSlotName)
+          TargetSlot: production          
