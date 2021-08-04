@@ -93,4 +93,23 @@ stages:
                   $reportRequestStorageConnectionString = (az storage account show-connection-string -g $(resourceGroupName) -n $(reportingStorageAccountName) -o tsv) | Out-String
                   az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "reportRequestStorageConnectionString=$reportRequestStorageConnectionString" "reportRequestQueueName=$(reportRequestQueueName)"
                   az functionapp config appsettings set -n $(functionAppName) -g $(resourceGroupName) --settings "reportRequestQueueName=$(reportRequestQueueName)"
+            
+            - task: ManualValidation@0
+              displayName: Validate staging slots before final move to production
+              inputs:
+                instructions: Please validte the web app and function app staging slots before proceeding with the slot swap operation
+                onTimeout: reject
+                timeout: 1440
+                condtion: eq(parameters['deployToSlot'], 'True')
+            
+            - task: AzureAppServiceManage@0
+              displayName: Swap web app slots
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnection }}
+                webAppName: $(appServiceName)
+                Action: Swap Slots
+                ResourceGroupName: $(resourceGroupName)
+                SourceSlot: $(stagingSlotName)
+                TargetSlot: production
+                condtion: eq(parameters['deployToSlot'], 'True')
 
