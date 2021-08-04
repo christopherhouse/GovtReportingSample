@@ -111,6 +111,7 @@ stages:
     environmentName: govt-rpt-dev
     variableGroupName: GOVT-REPORTING-DEV
     serviceConnection: AIRS
+    deployToSlot: False
 
 - template: templates/deploy-template.yaml
   parameters:
@@ -118,3 +119,4 @@ stages:
     environmentName: govt-rpt-prod
     variableGroupName: GOVT-REPORTING-PROD
     serviceConnection: MSDN
+    deployToSlot: True
