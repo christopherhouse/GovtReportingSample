@@ -63,6 +63,7 @@ stages:
                 appType: 'webApp'
                 WebAppName: $(appServiceName)
                 Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
+                ResourceGroupName: $(resourceGroupName)
                 deployToSlotOrASE: true
                 ${{ if eq(parameters['deployToSlot'], 'True') }}:
                   SlotName: $(stagingSlotName)
