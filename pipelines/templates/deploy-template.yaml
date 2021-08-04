@@ -98,7 +98,6 @@ stages:
       displayName: Wait for Validation
       condition: eq(parameters['deployToSlot'], 'True')
       dependsOn: Deploy
-      environment: ${{ parameters.environmentName }}
       variables:
       - group: ${{ parameters.variableGroupName }}
       pool: server
