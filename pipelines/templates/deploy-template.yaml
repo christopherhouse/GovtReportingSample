@@ -11,6 +11,9 @@ parameters:
 - name: serviceConnection
   default: ''
 
+- name: deployToSlot
+  default: 'False'
+
 stages:
   - stage: ${{ parameters.stageName }}
     displayName: ${{ parameters.stageName }}
@@ -21,12 +24,6 @@ stages:
       environment: ${{ parameters.environmentName }}
       variables:
       - group: ${{ parameters.variableGroupName }}
-      ${{ if eq(variables['createStagingSlot'], 'True')}}
-      - name: slotName
-        value: ${{ variables.stagingSlotName }}
-      ${{ if eq(variables['createStagingSlot'], 'False')}}
-      - name: slotName
-        value: production
       pool:
         vmImage: windows-latest
       strategy:
@@ -67,7 +64,10 @@ stages:
                 WebAppName: $(appServiceName)
                 Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
                 deployToSlotOrASE: true
-                SlotName: $(slotName)
+                ${{ if eq(parameters['deployToSlot'], 'True') }}
+                  SlotName: $(stagingSlotName)
+                ${{ if (eq(parameters['deployToSlot'], 'Fasle')) }}
+                  SlotName: production
             
             - task: AzureFunctionApp@1
               displayName: Deploy Function app
