@@ -111,7 +111,7 @@ stages:
     
     - job: swapSlots
       displayName: Swap staging and production slots
-      condition: eq('${{ parameters.deployToSlot }}', 'True')
+      condition: and(eq('${{ parameters.deployToSlot }}', 'True'), succeeded())
       dependsOn: waitForValidation
       variables:
       - group: ${{ parameters.variableGroupName }}
