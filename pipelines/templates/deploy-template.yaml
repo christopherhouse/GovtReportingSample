@@ -64,9 +64,9 @@ stages:
                 WebAppName: $(appServiceName)
                 Package: '$(Pipeline.Workspace)/webApp/GovtReportingDemo.zip'
                 deployToSlotOrASE: true
-                ${{ if eq(parameters['deployToSlot'], 'True') }}
+                ${{ if eq(parameters['deployToSlot'], 'True') }}:
                   SlotName: $(stagingSlotName)
-                ${{ if (eq(parameters['deployToSlot'], 'Fasle')) }}
+                ${{ if (eq(parameters['deployToSlot'], 'Fasle')) }}:
                   SlotName: production
             
             - task: AzureFunctionApp@1
